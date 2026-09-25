@@ -39,7 +39,62 @@ SAMPLERS = [
     "k_dpmpp_sde", "DDIM",
 ]
 
-st.set_page_config(page_title="AI Horde Image Generator", page_icon="🎨", layout="wide")
+st.set_page_config(page_title="✨ Cutie AI Art Generator", page_icon="🎀", layout="wide")
+
+# --------------------------------------------------------------------------
+# Cute pastel theme 💕
+# --------------------------------------------------------------------------
+
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background: linear-gradient(160deg, #ffe6f2 0%, #ffe9fb 35%, #eee3ff 70%, #e3f0ff 100%);
+    }
+    section[data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #ffd6ec 0%, #f3d6ff 100%);
+        border-right: 3px dashed #ff9ecf;
+    }
+    h1, h2, h3 {
+        color: #d6389a !important;
+        font-family: 'Comic Sans MS', 'Trebuchet MS', sans-serif;
+    }
+    .stButton>button {
+        background: linear-gradient(90deg, #ff9ecf, #c9a0ff);
+        color: white;
+        border-radius: 20px;
+        border: none;
+        font-weight: bold;
+        padding: 0.5em 1.2em;
+        box-shadow: 0 3px 8px rgba(255, 150, 220, 0.5);
+    }
+    .stButton>button:hover {
+        background: linear-gradient(90deg, #ff7fc4, #b183ff);
+        color: white;
+        transform: scale(1.03);
+    }
+    .stTextInput>div>div>input, .stTextArea textarea {
+        background-color: #fff0fa;
+        border-radius: 12px;
+        border: 2px solid #ffb3e0;
+    }
+    div[data-baseweb="select"] {
+        border-radius: 12px;
+    }
+    .stDownloadButton>button {
+        background: linear-gradient(90deg, #a0e7ff, #c9a0ff);
+        color: #4a2b5c;
+        border-radius: 20px;
+        border: none;
+        font-weight: bold;
+    }
+    div[data-testid="stCaptionContainer"] {
+        color: #a35bb5;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
 
 # --------------------------------------------------------------------------
@@ -133,10 +188,10 @@ def decode_image(gen_entry: dict):
 # --------------------------------------------------------------------------
 
 with st.sidebar:
-    st.title("⚙️ Settings")
+    st.title("🎀 Settings")
 
     api_key = st.text_input(
-        "AI Horde API Key",
+        "🔑 AI Horde API Key",
         value=st.session_state.get("api_key", ""),
         type="password",
         help="Leave blank to use the anonymous key (0000000000) — works, but "
@@ -145,22 +200,22 @@ with st.sidebar:
     st.session_state["api_key"] = api_key
     effective_key = api_key.strip() or ANON_KEY
 
-    if st.button("Check account / kudos"):
+    if st.button("💖 Check account / kudos"):
         info = find_user(effective_key)
         if info:
             st.success(
-                f"User: **{info.get('username', 'anonymous')}**  \n"
-                f"Kudos: **{info.get('kudos', 0):.0f}**"
+                f"👤 User: **{info.get('username', 'anonymous')}**  \n"
+                f"✨ Kudos: **{info.get('kudos', 0):.0f}**"
             )
         else:
-            st.error("Couldn't reach the horde or invalid key.")
+            st.error("😿 Couldn't reach the horde or invalid key.")
 
     st.divider()
-    st.subheader("Model")
+    st.subheader("🖌️ Model")
 
     models = get_active_models()
     if models:
-        model_labels = [f"{m['name']}  ({m.get('count', 0)} workers)" for m in models]
+        model_labels = [f"🌸 {m['name']}  ({m.get('count', 0)} workers)" for m in models]
         model_names = [m["name"] for m in models]
         default_idx = 0
         chosen_idx = st.selectbox(
@@ -171,7 +226,7 @@ with st.sidebar:
         )
         selected_model = model_names[chosen_idx]
     else:
-        st.warning("Could not fetch live model list — using a common default.")
+        st.warning("⚠️ Could not fetch live model list — using a common default.")
         selected_model = st.text_input("Model name", value="stable_diffusion")
 
     if st.button("🔄 Refresh model list"):
@@ -179,26 +234,26 @@ with st.sidebar:
         st.rerun()
 
     st.divider()
-    st.subheader("Image parameters")
+    st.subheader("🧁 Image parameters")
 
     col_a, col_b = st.columns(2)
     with col_a:
-        width = st.selectbox("Width", [512, 576, 640, 704, 768, 832, 896, 960, 1024], index=0)
+        width = st.selectbox("↔️ Width", [512, 576, 640, 704, 768, 832, 896, 960, 1024], index=0)
     with col_b:
-        height = st.selectbox("Height", [512, 576, 640, 704, 768, 832, 896, 960, 1024], index=0)
+        height = st.selectbox("↕️ Height", [512, 576, 640, 704, 768, 832, 896, 960, 1024], index=0)
 
-    steps = st.slider("Steps", min_value=1, max_value=50, value=25)
-    cfg_scale = st.slider("CFG scale", min_value=1.0, max_value=20.0, value=7.5, step=0.5)
-    sampler = st.selectbox("Sampler", SAMPLERS, index=SAMPLERS.index("k_euler_a"))
-    n_images = st.slider("Number of images", min_value=1, max_value=4, value=1)
-    seed = st.text_input("Seed (optional, blank = random)", value="")
-    nsfw_allowed = st.checkbox("Allow NSFW content", value=False)
+    steps = st.slider("👣 Steps", min_value=1, max_value=50, value=25)
+    cfg_scale = st.slider("🎯 CFG scale", min_value=1.0, max_value=20.0, value=7.5, step=0.5)
+    sampler = st.selectbox("🌀 Sampler", SAMPLERS, index=SAMPLERS.index("k_euler_a"))
+    n_images = st.slider("🖼️ Number of images", min_value=1, max_value=4, value=1)
+    seed = st.text_input("🌱 Seed (optional, blank = random)", value="")
+    nsfw_allowed = st.checkbox("🔞 Allow NSFW content", value=False)
 
     st.divider()
     st.caption(
-        "The AI Horde is a free, volunteer-run GPU cluster. Jobs queue "
+        "💌 The AI Horde is a free, volunteer-run GPU cluster. Jobs queue "
         "asynchronously — expect anywhere from a few seconds to a couple "
-        "minutes depending on load and your kudos priority."
+        "minutes depending on load and your kudos priority. 🌈"
     )
 
 
@@ -206,15 +261,15 @@ with st.sidebar:
 # Main area — prompt input + generate
 # --------------------------------------------------------------------------
 
-st.title("🎨 AI Horde Image Generator")
-st.write("Free, crowdsourced Stable Diffusion — powered by volunteer GPUs.")
+st.title("🎀✨ Cutie AI Art Generator ✨🎀")
+st.write("💕 Free, crowdsourced Stable Diffusion — powered by kind volunteers' GPUs! 🌸")
 
-prompt = st.text_area("Prompt", placeholder="A cinematic photo of a red fox in a snowy forest, golden hour lighting", height=100)
-negative_prompt = st.text_area("Negative prompt (optional)", placeholder="blurry, low quality, watermark", height=68)
+prompt = st.text_area("💭 Prompt", placeholder="A cinematic photo of a red fox in a snowy forest, golden hour lighting ✨", height=100)
+negative_prompt = st.text_area("🚫 Negative prompt (optional)", placeholder="blurry, low quality, watermark", height=68)
 
 col1, col2 = st.columns([1, 1])
-generate_clicked = col1.button("🚀 Generate", type="primary", use_container_width=True)
-cancel_clicked = col2.button("✖ Cancel current job", use_container_width=True)
+generate_clicked = col1.button("🪄 Generate!", type="primary", use_container_width=True)
+cancel_clicked = col2.button("💔 Cancel current job", use_container_width=True)
 
 if "request_id" not in st.session_state:
     st.session_state.request_id = None
@@ -222,11 +277,11 @@ if "request_id" not in st.session_state:
 if cancel_clicked and st.session_state.request_id:
     cancel_generation(st.session_state.request_id, effective_key)
     st.session_state.request_id = None
-    st.warning("Cancelled.")
+    st.warning("🥺 Cancelled.")
 
 if generate_clicked:
     if not prompt.strip():
-        st.error("Please enter a prompt first.")
+        st.error("💗 Please enter a prompt first!")
     else:
         full_prompt = prompt.strip()
         if negative_prompt.strip():
@@ -252,12 +307,12 @@ if generate_clicked:
             payload["params"]["seed"] = seed.strip()
 
         try:
-            with st.spinner("Submitting job to the horde..."):
+            with st.spinner("🎡 Submitting job to the horde..."):
                 request_id = submit_generation(effective_key, payload)
             st.session_state.request_id = request_id
-            st.success(f"Job submitted! Request ID: `{request_id}`")
+            st.success(f"🎉 Job submitted! Request ID: `{request_id}`")
         except Exception as e:
-            st.error(f"Submission failed: {e}")
+            st.error(f"💥 Submission failed: {e}")
             st.session_state.request_id = None
 
 # --------------------------------------------------------------------------
@@ -278,7 +333,7 @@ if st.session_state.request_id:
         try:
             check = check_generation(request_id)
         except Exception as e:
-            status_box.error(f"Lost connection while polling: {e}")
+            status_box.error(f"😢 Lost connection while polling: {e}")
             break
 
         done = check.get("done", False)
@@ -289,18 +344,18 @@ if st.session_state.request_id:
         waiting = check.get("waiting", 0)
 
         status_box.info(
-            f"⏳ Status — processing: **{processing}**, waiting: **{waiting}**, "
-            f"queue position: **{queue_position}**, est. wait: **{wait_time}s**"
+            f"🌟 Status — processing: **{processing}** 🎨, waiting: **{waiting}** ⏱️, "
+            f"queue position: **{queue_position}** 🎫, est. wait: **{wait_time}s** ⌛"
         )
         progress_box.progress(min(1.0, poll_count / 30))
 
         if faulted:
-            status_box.error("The horde reported this job faulted (couldn't be completed). Try again or change the model.")
+            status_box.error("💔 The horde reported this job faulted (couldn't be completed). Try again or change the model.")
             st.session_state.request_id = None
             break
 
         if done:
-            status_box.success("✅ Done! Fetching your image(s)...")
+            status_box.success("✅💖 Done! Fetching your image(s)...")
             try:
                 result = get_generation_status(request_id, effective_key)
                 generations = result.get("generations", [])
@@ -311,19 +366,19 @@ if st.session_state.request_id:
                         try:
                             img = decode_image(gen)
                             with col:
-                                st.image(img, caption=f"Seed: {gen.get('seed', '?')} · Worker: {gen.get('worker_name', '?')}", use_container_width=True)
+                                st.image(img, caption=f"🌱 Seed: {gen.get('seed', '?')} · 🧑‍🎨 Worker: {gen.get('worker_name', '?')}", use_container_width=True)
                                 buf = BytesIO()
                                 img.save(buf, format="PNG")
                                 st.download_button(
-                                    "Download PNG",
+                                    "💾 Download PNG",
                                     data=buf.getvalue(),
                                     file_name=f"horde_{gen.get('id', request_id)}.png",
                                     mime="image/png",
                                 )
                         except Exception as img_err:
-                            col.error(f"Could not decode image: {img_err}")
+                            col.error(f"😿 Could not decode image: {img_err}")
             except Exception as e:
-                status_box.error(f"Failed to fetch final image: {e}")
+                status_box.error(f"💥 Failed to fetch final image: {e}")
             st.session_state.request_id = None
             break
 
