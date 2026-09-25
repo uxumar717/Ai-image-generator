@@ -44,59 +44,77 @@ st.set_page_config(page_title="✨ Cutie AI Art Generator", page_icon="🎀", la
 # --------------------------------------------------------------------------
 # Cute pastel theme 💕
 # --------------------------------------------------------------------------
-
 st.markdown(
     """
     <style>
     .stApp {
-        background: linear-gradient(160deg, #ffe6f2 0%, #ffe9fb 35%, #eee3ff 70%, #e3f0ff 100%);
+        background: #0d0d0d;
+        color: #ffc0d9;
     }
     section[data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #ffd6ec 0%, #f3d6ff 100%);
-        border-right: 3px dashed #ff9ecf;
+        background: #0a0a0a;
+        border-right: 3px solid #ffb6c1;
     }
     h1, h2, h3 {
-        color: #d6389a !important;
-        font-family: 'Comic Sans MS', 'Trebuchet MS', sans-serif;
+        color: #ffb6c1 !important;
+        font-family: 'Trebuchet MS', sans-serif;
+    }
+    p, span, label, .stMarkdown, div[data-testid="stCaptionContainer"] {
+        color: #800020 !important;
+    }
+    section[data-testid="stSidebar"] p,
+    section[data-testid="stSidebar"] span,
+    section[data-testid="stSidebar"] label {
+        color: #ffc0d9 !important;
     }
     .stButton>button {
-        background: linear-gradient(90deg, #ff9ecf, #c9a0ff);
-        color: white;
+        background: #ffb6c1;
+        color: #0d0d0d;
         border-radius: 20px;
-        border: none;
+        border: 2px solid #800020;
         font-weight: bold;
         padding: 0.5em 1.2em;
-        box-shadow: 0 3px 8px rgba(255, 150, 220, 0.5);
+        box-shadow: 0 3px 10px rgba(128, 0, 32, 0.6);
     }
     .stButton>button:hover {
-        background: linear-gradient(90deg, #ff7fc4, #b183ff);
-        color: white;
+        background: #800020;
+        color: #ffc0d9;
+        border: 2px solid #ffb6c1;
         transform: scale(1.03);
     }
     .stTextInput>div>div>input, .stTextArea textarea {
-        background-color: #fff0fa;
+        background-color: #1a1a1a;
+        color: #ffc0d9 !important;
         border-radius: 12px;
-        border: 2px solid #ffb3e0;
+        border: 2px solid #800020;
     }
-    div[data-baseweb="select"] {
+    div[data-baseweb="select"] > div {
+        background-color: #1a1a1a;
+        border: 2px solid #800020;
         border-radius: 12px;
+        color: #ffc0d9 !important;
     }
     .stDownloadButton>button {
-        background: linear-gradient(90deg, #a0e7ff, #c9a0ff);
-        color: #4a2b5c;
+        background: #800020;
+        color: #ffc0d9;
         border-radius: 20px;
-        border: none;
+        border: 2px solid #ffb6c1;
         font-weight: bold;
     }
-    div[data-testid="stCaptionContainer"] {
-        color: #a35bb5;
+    .stDownloadButton>button:hover {
+        background: #ffb6c1;
+        color: #0d0d0d;
+    }
+    .stAlert, div[data-testid="stMetric"] {
+        border-radius: 12px;
+    }
+    hr, div[data-testid="stDivider"] {
+        border-color: #800020 !important;
     }
     </style>
     """,
     unsafe_allow_html=True,
 )
-
-
 # --------------------------------------------------------------------------
 # API helpers
 # --------------------------------------------------------------------------
